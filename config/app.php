@@ -194,10 +194,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\FortifyServiceProvider::class,
-        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
+        
     ],
 
     /*

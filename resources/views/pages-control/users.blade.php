@@ -27,7 +27,6 @@
     <!-- /BREADCRUMB -->
     
 
-.div$*4
 
     <div class="row layout-spacing">
         <div class="col-lg-12">
@@ -43,10 +42,7 @@
                             <tr>
                                 <th class="checkbox-column dt-no-sorting"> Record no. </th>
                                 <th>Nombre</th>
-                                <th>Foto</th>
                                 <th>Email</th>
-                                <th>Contacto</th>
-                                <th class="">Estatus</th>
                                 <th class="text-center dt-no-sorting">Acciones</th>
                             </tr>
                         </thead>
@@ -55,18 +51,7 @@
                             <tr>
                                 <td class="checkbox-column"> 1 </td>
                                 <td class="user-name">{{ $user->nombre_usuario }}</td>
-                                <td class="">
-                                    <a class="profile-img" href="javascript: void(0);">
-                                        <img src="{{Vite::asset('resources/images/profile-3.jpeg')}}" alt="product">
-                                    </a>
-                                </td>
                                 <td>{{ $user->email }}</td>
-                                <td></td>
-                                <td>
-                                    <div class="d-flex">
-                                        <div class=" align-self-center d-m-success  mr-1 data-marker"></div>
-                                        <span class="label label-success">Approved</span>
-                                    </div>
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">

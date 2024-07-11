@@ -1,95 +1,109 @@
-<x-base-layout :scrollspy="false">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{Vite::asset('resources/images/favicon.ico')}}"/>
+    @vite(['resources/css/login.css'])
+</head>
+<body>
+    <div class="container">
+        <div class="forms-container">
+            <div class="signin-signup">
+                <form method="POST" action="{{ route('login') }}" class="sign-in-form">
+                @csrf
+                    <h2 class="title">Iniciar Sesión</h2>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+            <x-text-input id="email" class="block mt-1 w-full" placeholder="Correo" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            placeholder="Contraseña"
+                            required autocomplete="current-password" />
 
-    <x-slot:pageTitle>
-        Login
-    </x-slot>
+                  <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    </div>
+                    <input type="submit" value="Login" class="btn solid">
+                </form>
 
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <x-slot:headerFiles>
-        <!--  BEGIN CUSTOM STYLE FILE  
-        @vite(['resources/scss/light/assets/authentication/auth-boxed.scss'])
-        @vite(['resources/scss/dark/assets/authentication/auth-boxed.scss'])
-         END CUSTOM STYLE FILE  -->
-         @vite('resources/css/login.css')
-
-         <style>
-             .background-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Oscurece la imagen */
-        }
-        body {
-            /* Establece la imagen de fondo */
-            background-image: url('{{ Vite::asset("resources/images/EDIFICIO.jpg") }}');
-
-            /* Ajusta la configuración de la imagen de fondo */
-            background-size: cover; /* Cubre toda el área del contenedor */
-            background-position: center; /* Centra la imagen */
-            background-repeat: no-repeat; /* No se repite la imagen */
-        }
-        h2 {
-            font-family: Arial, sans-serif; 
-    font-size: 24px; /* Tamaño de fuente */
-    font-weight: bold; /* Peso de la fuente */
-    color: #333; /* Color del texto */
-    letter-spacing: 1px; /* Espaciado entre letras */
-    margin-bottom: 10px; /* Margen inferior */
-  }
-        </style>
-
-
-    </x-slot>
-    <!-- END GLOBAL MANDATORY STYLES -->
-    
-    <body>
-        
-	<!-- Main Content -->
-	<div class="container-fluid">
-		<div class="row main-content bg-success text-center">
-			<div class="col-md-4 text-center company__info">
-				<span class="company__logo"><h2><span class="fa fa-android"></span></h2></span>
-                <img src="{{Vite::asset('resources/images/logo_uaqroo.png')}}" alt="" class="img-fluid">
-			</div>
-			<div class="col-md-8 col-xs-12 col-sm-12 login_form ">
-				<div class="container-fluid">
-					<div class="row">
-                        <br>
-						<h2>Log in</h2>
-					</div>
-					<div class="row">
-                    <form method="POST" action="{{ route('login') }}" class="form-group">
-        @csrf
-							<div class="row">
-								<input type="text" name="email" :value="old('email')" id="username" class="form__input" placeholder="Correo">
-							</div>
-							<div class="row">
-								<!-- <span class="fa fa-lock"></span> -->
-								<input type="password" name="password" id="password" class="form__input" placeholder="Contraseña">
-							</div>
-                            <div class="row">
-            <div class="col text-right">
-        <input type="submit" value="Ingresar" class="btn">
-    </div>
+                <!-- Formulario de registro -->
+                <form action="#" class="sign-up-form">
+                    <h2 class="title">Registro</h2>
+                    <div class="input-field">
+                      <i class="fas fa-user"></i>
+                      <input type="text" placeholder="Username" />
+                    </div>
+                    <div class="input-field">
+                    <i class="fa-solid fa-book"></i>
+                    <select name="pets" id="pet-select">
+  <option value="">--Porfavor selecciona una opción--</option>
+  <option value="dog">Dog</option>
+  <option value="cat">Cat</option>
+  <option value="hamster">Hamster</option>
+  <option value="parrot">Parrot</option>
+  <option value="spider">Spider</option>
+  <option value="goldfish">Goldfish</option>
+</select>                    
 </div>
+                    <div class="input-field">
+                      <i class="fas fa-envelope"></i>
+                      <input type="email" placeholder="Correo" />
+                    </div>
+                    <div class="input-field">
+                      <i class="fas fa-lock"></i>
+                      <input type="password" placeholder="Contraseña" />
+                    </div>
+                    <input type="submit" class="btn" value="Registrar" />
+<!--                    <p class="social-text">O registrate con las plataformas sociales</p>
+                    <div class="social-media">
+                      <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                      </a>
+                      <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                      </a>
+                      <a href="#" class="social-icon">
+                        <i class="fab fa-google"></i>
+                      </a>
+                      <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                      </a>
+                    </div> -->
+                  </form>
+            </div>
+        </div>
 
-						</form>
-					</div>
-					<div class="row">
-						<p>¿No tienes cuenta? <a href="#">Registrate aquí</a></p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>¿Nuevo aquí?</h3>
+                    <p>Puedes registrarte aquí</p>
+                        <button class="btn transparent" id="sign-up-btn">Registro</button>
+                </div>
+
+                <img src="{{Vite::asset('resources/images/log.svg')}}" class="image" alt="log">
+            </div>
+
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>¿Ya tienes cuenta?</h3>
+                    <p>Inicia sesión aquí</p>
+                        <button class="btn transparent" id="sign-in-btn">Iniciar sesión</button>
+                </div>
+
+                <img src="{{Vite::asset('resources/images/register.svg')}}" class="image" alt="log">
+            </div>
+        </div>
+    </div>
+
+    @vite(['resources/js/login.js'])
 
 </body>
-    
-    <!--  BEGIN CUSTOM SCRIPTS FILE  -->
-    <x-slot:footerFiles>
-
-    </x-slot>
-    <!--  END CUSTOM SCRIPTS FILE  -->
-</x-base-layout>
+</html>

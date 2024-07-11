@@ -13,7 +13,7 @@ function add_notification(selector, options) {
 
 // Default
 
-add_notification('.default', {text: 'Example notification text.', duration: 100000})
+add_notification('.default', {text: 'Ejemplo.', duration: 100000})
 
 // Position
 

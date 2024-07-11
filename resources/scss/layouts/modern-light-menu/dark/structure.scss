@@ -884,19 +884,20 @@ body.layout-dark {
         transition: padding .4s;
         
         .profile-img {
-            transition: margin-left .5s;
-            padding-left: 10px;
-            img {
-                top: 34px;
-                border-radius: 50%;
-                right: 0;
-                left: 0;
-                height: 48px;
-                width: 48px;
-                height: 36px;
-                width: 35px;
-            }
-        }
+          display: inline-block; /* Asegura que el contenedor respete el tamaño del contenido */
+          transition: margin-left .5s;
+          padding-left: 10px;
+      }
+      
+      .profile-img img {
+          display: block; /* Hace que la imagen sea un bloque para manejar correctamente el posicionamiento */
+          border-radius: 50%;
+          position: relative; /* Asegura que la posición relativa sea establecida */
+          left: -10px; /* Ajusta el margen izquierdo para mover la imagen a la izquierda */
+          top: 0; /* Ajusta la posición vertical si es necesario */
+          height: 36px; /* Ajusta la altura de la imagen */
+          width: 35px; /* Ajusta el ancho de la imagen */
+      }
         
         .profile-content {
             align-self: center;

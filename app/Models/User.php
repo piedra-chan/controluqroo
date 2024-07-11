@@ -24,18 +24,18 @@ class User extends Authenticatable
     protected $fillable = [
         'nombre_usuario',
         'email',
-        'contrasena',
+        'password',
         'persona_id'
     ];
 
     public function persona()
     {
-        return $this->belongsTo(Persona::class);
+        return $this->hasOne(Persona::class, 'usuario_id');
     }
 
     public function autorizaciones()
     {
-        return $this->hasMany(Autorizaciones::class);
+        return $this->hasMany(Autorizaciones::class, 'usuario_id');
     }
 
     /**

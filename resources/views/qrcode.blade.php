@@ -22,13 +22,6 @@ body {
     transition: all 0.5s;
 }
 
-.image img {
-    transition: all 0.5s
-}
-
-.card:hover .image img {
-    transform: scale(1.5)
-}
 
 .btn {
     height: 140px;
@@ -99,7 +92,7 @@ hr .new1 {
     <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
    <div class="card p-4">
       <div class=" image d-flex flex-column justify-content-center align-items-center">
-         <button class="btn btn-secondary"> <img src="{{Vite::asset('resources/images/soldierboy.jpg')}}" height="100" width="100" /></button> <span class="name mt-3">{{ $user->nombre_usuario }}</span> <span class="idd">{{ $user->email }}</span> 
+         <button class="btn btn-secondary"> <img src="{{Vite::asset('resources/images/logo_uaqroo.png')}}" height="100" width="100" /></button> <span class="name mt-3">{{ $user->nombre_usuario }}</span> <span class="idd">{{ $user->email }}</span> 
 
          <div class=" d-flex mt-2">{!! $qrCode !!}
  </div>
