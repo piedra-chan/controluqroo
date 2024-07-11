@@ -38,6 +38,9 @@
     
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/bootstrap/bootstrap.min.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/apexcharts@3.33.2/dist/apexcharts.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
     @vite(['resources/scss/light/assets/main.scss', 'resources/scss/dark/assets/main.scss'])
 
     @if (
@@ -284,10 +287,14 @@
         )
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <script src="{{asset('plugins/bootstrap/bootstrap.bundle.min.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.33.2/dist/apexcharts.min.js"></script>
         <script src="{{asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
         <script src="{{asset('plugins/mousetrap/mousetrap.min.js')}}"></script>
         <script src="{{asset('plugins/waves/waves.min.js')}}"></script>
         <script src="{{asset('plugins/highlight/highlight.pack.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+        @vite(['resources/layouts/modern-light-menu/app.js'])
         @if ($scrollspy == 1) @vite(['resources/assets/js/scrollspyNav.js']) @endif
 
         @if (Request::is('modern-light-menu/*'))

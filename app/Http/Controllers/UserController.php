@@ -26,8 +26,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user_email = $user->email;
         //encriptacion usando la funcioon oppenssl_encrypt para aes 256
-
-        $key = 'theamericannightmare';
+        $key = env('ENCRYPTION_KEY');
 
         //vector de inicialización
 
@@ -38,7 +37,6 @@ class UserController extends Controller
 
         //concatenar el vector de inicializacion y el email cifrado
         $correo_encriptado = base64_encode($iv . $encriptacion);
-
 
         $pathToImage = public_path('images/uqroo.png');
 

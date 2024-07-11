@@ -11,7 +11,7 @@
 
 <div class="widget widget-chart-two">
     <div class="widget-heading">
-        <h5 class="">{{$title}}</h5>
+        <h5 class="">hey</h5>
     </div>
     <div class="widget-content">
         <div id="chart-2" class=""></div>

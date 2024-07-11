@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
     Route::get('/validaciones', [ApiUaqrooController::class, 'validarUsuario']);
     Route::post('/evento', [ApiUaqrooController::class, 'eventosAcceso']);
+    
     Route::get('/acceso/{email}/{areaId}', [ApiUaqrooController::class, 'buscarUsuario']);

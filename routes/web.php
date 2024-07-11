@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AreaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +30,17 @@ Route::get('/', function () {
 
 Route::get('/dashboard2', function () {
     return view('barebone',  ['title' => 'Dashboard | SCAcces  ']);
-});
+})->name('dash');
+
+
+//Rutas para las areas
+
+Route::get('/ver-areas', [AreaController::class, 'index'])->name('areas.index');
+Route::post('/guardar-area', [AreaController::class, 'store'])->name('areas.store');
+Route::get('/administrar-area/{id}', [AreaController::class, 'administrar'])->name('adm.area');
+Route::put('/editar-area/{id}', [AreaController::class, 'update'])->name('adm.area');
+Route::post('/permitir-acceso', [AreaController::class, 'permitirAccesos'])->name('areas.acceso');
+Route::post('/generar-reporte/{id}', [AreaController::class, 'generarReporte'])->name('areas.reporte');
 
 
 
@@ -43,5 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
 
 require __DIR__.'/auth.php';

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Autorizaciones;
 use App\Models\EventosAcceso;
 use App\Models\User;
+use Carbon\Carbon;
 
 class ApiUaqrooController extends Controller
 {
@@ -36,9 +37,30 @@ class ApiUaqrooController extends Controller
 
     public function buscarUsuario($email, $areaId)
     {
-        $user = User::where('email', $email)->firstOrFail();
 
+        // Decodificar el correo de base 64
+
+        $emailDecoded = base64_decode($email);
+
+        //Separar el IV del correo encriptado
+
+        $iv_lenght = openssl_cipher_iv_length('aes-256-cbc');
+        $iv = substr($emailDecoded, 0, $iv_lenght);
+        $emailDecoded2 = substr($emailDecoded, $iv_lenght);
+
+        // Clave para el desenciptado que se establecio en el .env
+        $key = env('ENCRYPTION_KEY');
+
+        //desencriptar el email
+        $user_email = openssl_decrypt($emailDecoded2, 'aes-256-cbc', $key, 0, $iv);
+
+        $user = User::where('email', $user_email)->firstOrFail();
         $user_id = $user->usuario_id;
+
+        $e = new EventosAcceso;
+        $e->area_id = $areaId;
+        $e->usuario_id = $user_id;
+        $e->fecha_hora = now();
 
         if($user) {
 
@@ -46,9 +68,22 @@ class ApiUaqrooController extends Controller
                                         ->where('area_id', $areaId)
                                         ->first();
 
-        if($validacion)  {
+        // usaremos una variable para almacnear el resultado de una funcion
+        // llamada isWeekDay de carbon, para que el acceso solo sea valido 
+        // de lunes a viernes
+        $isWeekDay = Carbon::now()->isWeekday();
+        // Validar si la autorozación sigue vigente usando if, y la función
+        // isFuture(), que es una función proporcionada por la biblioteca
+        // carbon de PHP dateTime utilzada por Laravel, para el manejo
+        // de fechas y tiempos más sencilla y fluida, en este caso 
+        // verifica si espires_at esta en futuro.                                
+        if($validacion && (!$validacion->expires_at || Carbon::parse($validacion->expires_at)->isFuture()))  {
+            $e->permiso = 'PERMITIDO';
+            $e->save();
             return response()->json(['acceso' => true]);
         } else {
+            $e->permiso = 'NO PERMITIDO';
+            $e->save();
             return response()->json(['acceso' => false]);
         }
     }else {

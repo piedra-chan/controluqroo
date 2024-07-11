@@ -107,6 +107,8 @@
         
 
     @endif
+    @include('sweetalert::alert')
+
     
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     {{$headerFiles}}
