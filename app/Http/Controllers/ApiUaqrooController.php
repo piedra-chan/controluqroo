@@ -7,6 +7,8 @@ use App\Models\Autorizaciones;
 use App\Models\EventosAcceso;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Notifications\AccesoNoAutorizadoNotification;
+
 
 class ApiUaqrooController extends Controller
 {
@@ -39,11 +41,8 @@ class ApiUaqrooController extends Controller
     {
 
         // Decodificar el correo de base 64
-
         $emailDecoded = base64_decode($email);
-
         //Separar el IV del correo encriptado
-
         $iv_lenght = openssl_cipher_iv_length('aes-256-cbc');
         $iv = substr($emailDecoded, 0, $iv_lenght);
         $emailDecoded2 = substr($emailDecoded, $iv_lenght);
@@ -69,9 +68,6 @@ class ApiUaqrooController extends Controller
                                         ->first();
 
         // usaremos una variable para almacnear el resultado de una funcion
-        // llamada isWeekDay de carbon, para que el acceso solo sea valido 
-        // de lunes a viernes
-        $isWeekDay = Carbon::now()->isWeekday();
         // Validar si la autorozación sigue vigente usando if, y la función
         // isFuture(), que es una función proporcionada por la biblioteca
         // carbon de PHP dateTime utilzada por Laravel, para el manejo
@@ -84,6 +80,9 @@ class ApiUaqrooController extends Controller
         } else {
             $e->permiso = 'NO PERMITIDO';
             $e->save();
+
+            $user->notify(new AccesoNoAutorizadoNotification());
+
             return response()->json(['acceso' => false]);
         }
     }else {

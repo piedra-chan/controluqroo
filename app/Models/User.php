@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -56,4 +58,23 @@ class User extends Authenticatable
   /*  protected $casts = [
         'email_verified_at' => 'datetime',
     ]; */
+
+    public static function userIn()
+    {
+        $sql = DB::table('usuarios')
+        ->join('persona', 'persona.usuario_id', '=', 'usuarios.usuario_id')
+        ->select('usuarios.usuario_id', 'usuarios.nombre_usuario', 'usuarios.email', 'persona.nombre', 'persona.ape_materno', 'persona.ape_paterno', 'persona.telefono')
+        ->where('usuarios.usuario_id', Auth::user()->usuario_id);
+        
+        return $sql->first();
+    }
+
+    public static function users()
+    {
+        $sql = DB::table('usuarios')
+        ->join('persona', 'persona.usuario_id', '=', 'usuarios.usuario_id')
+        ->select('usuarios.usuario_id', 'usuarios.nombre_usuario', 'usuarios.email', 'persona.nombre', 'persona.ape_materno', 'persona.ape_paterno', 'persona.telefono');
+
+        return $sql->get();
+    }
 }

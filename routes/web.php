@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\DashController;
+use App\Http\Controllers\EventosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,33 +18,38 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware('auth')->group(function () {
+    Route::get('/principal', [DashController::class, 'index'])->name('dash');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/historial', [EventosController::class, 'index'])->name('eventos');
+});
+
 // Rutas para usuario
-
-Route::get('/ver-users', [UserController::class, 'index'])->name('user.index');
-Route::get('/generar-qr/{id}', [UserController::class, 'generarQr'])->name('user.qr');
-Route::get('/enviar-qr', [UserController::class, 'enviarMailsQr'])->name('mail.qr');
-
+Route::middleware('auth')->group(function () {
+    Route::get('/ver-users', [UserController::class, 'index'])->name('user.index');
+    Route::get('/generar-qr/{id}', [UserController::class, 'generarQr'])->name('user.qr');
+    Route::get('/enviar-qr', [UserController::class, 'enviarMailsQr'])->name('mail.qr');
+    Route::get('/user-info', [UserController::class, 'userInfo']);
+    Route::get('/download-qr', [UserController::class, 'downloadQr']);
+});
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 
-Route::get('/dashboard2', function () {
-    return view('barebone',  ['title' => 'Dashboard | SCAcces  ']);
-})->name('dash');
-
 
 //Rutas para las areas
-
-Route::get('/ver-areas', [AreaController::class, 'index'])->name('areas.index');
-Route::post('/guardar-area', [AreaController::class, 'store'])->name('areas.store');
-Route::get('/administrar-area/{id}', [AreaController::class, 'administrar'])->name('adm.area');
-Route::put('/editar-area/{id}', [AreaController::class, 'update'])->name('adm.area');
-Route::post('/permitir-acceso', [AreaController::class, 'permitirAccesos'])->name('areas.acceso');
-Route::post('/generar-reporte/{id}', [AreaController::class, 'generarReporte'])->name('areas.reporte');
-
-
+Route::middleware('auth')->group(function () {
+    Route::get('/ver-areas', [AreaController::class, 'index'])->name('areas.index');
+    Route::post('/guardar-area', [AreaController::class, 'store'])->name('areas.store');
+    Route::get('/administrar-area/{id}', [AreaController::class, 'administrar'])->name('adm.area');
+    Route::put('/editar-area/{id}', [AreaController::class, 'update'])->name('adm.area');
+    Route::post('/permitir-acceso', [AreaController::class, 'permitirAccesos'])->name('areas.acceso');
+    Route::post('/generar-reporte/{id}', [AreaController::class, 'generarReporte'])->name('areas.reporte');
+});
 
 
 Route::get('/dashboard', function () {

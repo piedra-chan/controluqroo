@@ -1,7 +1,26 @@
 import _ from 'lodash';
 window._ = _;
 import * as bootstrap from bootstrap
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    encrypted: true,
+});
+
+// Escuchar notificaciones privadas dirigidas al usuario actual
+window.Echo.private('App.User.' + usuario_id)
+    .notification((notification) => {
+        console.log(notification);
+        // Aquí puedes manejar la notificación recibida
+        // Por ejemplo, mostrarla en una barra de notificaciones o modal
+        alert(notification.message); // Ejemplo básico, ajusta según tu diseño
+    });
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the

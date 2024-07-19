@@ -149,8 +149,8 @@
                                 @csrf
                                 <label for="disabledTextInput">Usuarios:</label>
                                 <select id="mi-select" name="usuarios[]" multiple="multiple" class="form-control" style="width: 100%;">
-                                    @foreach($users as $user)
-                                    <option value="{{ $user->usuario_id }}">{{ $user->nombre_usuario .' '. $user->emsil }}</option>
+                                    @foreach($users_i as $user)
+                                    <option value="{{ $user->usuario_id }}">{{ $user->nombre .' '. $user->ape_materno . ' ' . $user->ape_paterno }}</option>
                                     @endforeach
                                 </select>
                                 <br>

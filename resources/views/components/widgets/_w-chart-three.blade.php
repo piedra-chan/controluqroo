@@ -12,7 +12,7 @@
 <div class="widget widget-chart-three">
     <div class="widget-heading">
         <div class="">
-            <h5 class="">{{$title}}</h5>
+            <h5 class=""></h5>
         </div>
 
         <div class="dropdown ">
