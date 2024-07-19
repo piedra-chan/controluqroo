@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy PHP app to Azure Web App - uaqroo-control-acceso
+name: Build and deploy PHP app to Azure Web App - control-accesso
 
 on:
   push:
@@ -20,6 +20,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+
 
       - name: Check if composer.json exists
         id: check_files
@@ -30,6 +32,16 @@ jobs:
       - name: Run composer install if composer.json exists
         if: steps.check_files.outputs.files_exists == 'true'
         run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+        # Using NPM to build dependencies for production
+      - name: Build CSS
+        run: |
+          npm install 
+          npm run build
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -61,15 +73,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_09A0326697A94B06B0B6CA205C785158 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CF8F02E04C424D90978EC4595F1058C8 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CF779C3C590A4E048031EE690CCF55AE }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A5C742F7A1544DF9BF34521F348E0349 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D0448842327B4CCB873B8CDF542495C3 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_320227DEFB6B4F39BCFDA295ED1F6629 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'uaqroo-control-acceso'
+          app-name: 'control-accesso'
           slot-name: 'Production'
           package: .
           
