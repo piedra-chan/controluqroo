@@ -39,6 +39,35 @@ class EventosAcceso extends Model
         return $sql->get();
 
     }
+
+    public static function accesosSemanalesM()
+    {
+         $sql = DB::table('eventos_acceso as e')
+        ->join('usuarios as u', 'e.usuario_id', '=', 'u.usuario_id')
+        ->join('persona as p', 'u.usuario_id', '=', 'p.usuario_id')
+        ->select(DB::raw('DATE(fecha_hora) as date'), DB::raw('count(*) as count'))
+        ->whereBetween('fecha_hora', [now()->startOfWeek(), now()->endOfWeek()])
+        ->groupBy('date')
+        ->orderBy('date')
+        ->where('p.sexo', 'M');
+
+        return $sql->get();
+
+    }
+    public static function accesosSemanalesF()
+    {
+         $sql = DB::table('eventos_acceso as e')
+        ->join('usuarios as u', 'e.usuario_id', '=', 'u.usuario_id')
+        ->join('persona as p', 'u.usuario_id', '=', 'p.usuario_id')
+        ->select(DB::raw('DATE(fecha_hora) as date'), DB::raw('count(*) as count'))
+        ->whereBetween('fecha_hora', [now()->startOfWeek(), now()->endOfWeek()])
+        ->groupBy('date')
+        ->orderBy('date')
+        ->where('p.sexo', 'F');
+
+        return $sql->get();
+
+    }
     // Funcion para contar cuantos usuarios masculinos y cuantos femeninos
     // ingresaron al area
     public static function accesosPorGenero($area_id = null)
@@ -107,6 +136,18 @@ class EventosAcceso extends Model
         return $sql->groupBy('date')
                    ->orderBy('date')
                    ->get();
+    }
+
+    public static function accesosHoy()
+    {
+        $sql = DB::table('eventos_acceso as e')
+        ->join('usuarios as u', 'e.usuario_id', '=', 'u.usuario_id')
+        ->join('persona as p', 'u.usuario_id', '=', 'p.usuario_id')
+        ->join('areas as a', 'e.area_id', '=', 'a.area_id')
+        ->select(DB::raw('CONCAT(p.nombre, " ", p.ape_materno, " ", p.ape_paterno) AS full_name'), 'a.nombre', 'e.permiso', 'e.fecha_hora')
+        ->orderBy('e.fecha_hora', 'desc');
+
+        return $sql->get();
     }
     }
 

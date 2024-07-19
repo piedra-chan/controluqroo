@@ -146,9 +146,11 @@ class AreaController extends Controller
             // Cargar usuarios permitidos dentro del area
         $users_acces = Autorizaciones::usuariosPermitidos($id);
 
+        $users_i = User::users();
 
+     
 
-        return view('pages-control.areas.adm_areas', compact('area', 'chart', 'chart2', 'users','accesos','users_acces'));
+        return view('pages-control.areas.adm_areas', compact('users_i', 'area', 'chart', 'chart2', 'users','accesos','users_acces'));
     }
 
     public function permitirAccesos(Request $request)
@@ -214,20 +216,6 @@ class AreaController extends Controller
             'diciembre' => 0,
         ];
 
-        $mesesEsp = [
-            'Enero' => 0,
-            'Febrero' => 0,
-            'Marzo' => 0,
-            'Abril' => 0,
-            'Mayo' => 0,
-            'Junio' => 0,
-            'Julio' => 0,
-            'Agosto' => 0,
-            'Septiembre' => 0,
-            'Octubre' => 0,
-            'Noviembre' => 0,
-            'Diciembre' => 0,
-        ];
 
     $conteo_final = null;
     $conteo_permitidos = null;
@@ -246,11 +234,6 @@ class AreaController extends Controller
         }
     }
 
-   // dd([
-     //   'total_conteo' => $conteo_final,
-       // 'total_conteo_permitido' => $conteo_permitidos,
-    //    'total_conteo_denegado' => $conteo_denegados,
-  // ]);
 
     // Obtener los nombres de los meses ordenados
     $mesesOrdenados = array_keys($accesosPorMes);
@@ -259,11 +242,7 @@ class AreaController extends Controller
     $data = array_values($accesosPorMes);
 
     // Configurar el gráfico con LarapexCharts
-    $chart = (new LarapexChart)->barChart()
-        ->addData('Accesos', $data)
-        ->setXAxis($mesesOrdenados)
-        ->setWidth(500)
-        ->setHeight(500);
+
 
     $hoy = Carbon::now();
     $data = array_map('intval', $data);

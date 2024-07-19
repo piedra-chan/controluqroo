@@ -1,14 +1,13 @@
 <x-base-layout :scrollspy="false">
 
     <x-slot:pageTitle>
-        {{$title}} 
+        Dashboard  
     </x-slot>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
         <link rel="stylesheet" href="{{asset('plugins/apex/apexcharts.css')}}">
-
         @vite(['resources/scss/light/assets/components/list-group.scss'])
         @vite(['resources/scss/light/assets/widgets/modules-widgets.scss'])
 
@@ -30,36 +29,25 @@
                 <h6 class="value">Accesos permitidos</h6>
             </div>
             <div class="task-action">
-                <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" id="expenses" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                    </a>
-
-                    <div class="dropdown-menu left" aria-labelledby="expenses" style="will-change: transform;">
-                        <a class="dropdown-item" href="javascript:void(0);">This Week</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Last Week</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                    </div>
-                </div>
             </div>
         </div>
 
         <div class="w-content">
 
             <div class="w-info">
-                <p class="value">102 <span>Esta semana</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></p>
+                <p class="value">{{ $conteo_permitido }} <span>Esta semana</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></p>
             </div>
             
         </div>
 
         <div class="w-progress-stats">                                            
             <div class="progress">
-                <div class="progress-bar bg-gradient-secondary" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-gradient-secondary" role="progressbar" style="width: {{ $porcentaje_perm }}%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
 
             <div class="">
                 <div class="w-icon">
-                    <p>57%</p>
+                    <p>{{ $porcentaje_perm }}%</p>
                 </div>
             </div>
             
@@ -76,36 +64,25 @@
                 <h6 class="value">Accesos denegados</h6>
             </div>
             <div class="task-action">
-                <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" id="expenses" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                    </a>
-
-                    <div class="dropdown-menu left" aria-labelledby="expenses" style="will-change: transform;">
-                        <a class="dropdown-item" href="javascript:void(0);">This Week</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Last Week</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                    </div>
-                </div>
             </div>
         </div>
 
         <div class="w-content">
 
             <div class="w-info">
-                <p class="value">58 <span>Esta semana</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></p>
+                <p class="value">{{ $conteo_denegado }} <span>Esta semana</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></p>
             </div>
             
         </div>
 
         <div class="w-progress-stats">                                            
             <div class="progress">
-                <div class="progress-bar bg-gradient-secondary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-gradient-secondary" role="progressbar" style="width: {{ $porcentaje_deneg }}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
 
             <div class="">
                 <div class="w-icon">
-                    <p>57%</p>
+                    <p>{{ $porcentaje_deneg }}%</p>
                 </div>
             </div>
             
@@ -127,7 +104,7 @@
 
                 <div class="balance-info">
                     <h6>Intentos de acceso hoy</h6>
-                    <p>12</p>
+                    <p>{{ $conteo_hoy }}</p>
                 </div>
             </div>
 
@@ -139,13 +116,34 @@
 </div>
         </div>
     
-        <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-chart-three title="Unique Visitors"/>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+
+        <div class="widget widget-chart-three">
+    <div class="widget-heading">
+        <div class="">
+            <h5 class="">Accesos por género</h5>
+        </div>
+
+        <div class="dropdown ">
+            <a class="dropdown-toggle" href="#" role="button" id="uniqueVisitors" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+            </a>
+
+            <div class="dropdown-menu left" aria-labelledby="uniqueVisitors">
+                <a class="dropdown-item" href="javascript:void(0);">View</a>
+                <a class="dropdown-item" href="javascript:void(0);">Update</a>
+                <a class="dropdown-item" href="javascript:void(0);">Download</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-content">
+    {!! $chart->container() !!}
+    </div>
+</div>
+
         </div>
     
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-activity-five title="Activity Log"/>
-        </div>
     
         <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
              <x-widgets._w-four title="Visitors by Browser"/>
@@ -222,6 +220,10 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{asset('plugins/apex/apexcharts.min.js')}}"></script>
+
+
+        {!! $chart->script() !!}
+
         
         {{-- Analytics --}}
         @vite(['resources/assets/js/widgets/_wSix.js'])

@@ -94,8 +94,12 @@ hr .new1 {
       <div class=" image d-flex flex-column justify-content-center align-items-center">
          <button class="btn btn-secondary"> <img src="{{Vite::asset('resources/images/logo_uaqroo.png')}}" height="100" width="100" /></button> <span class="name mt-3">{{ $user->nombre_usuario }}</span> <span class="idd">{{ $user->email }}</span> 
 
-         <div class=" d-flex mt-2">{!! $qrCode !!}
- </div>
+         <div class=" d-flex mt-2">
+            
+        </div>
+
+        {!! $qrCode !!}
+
       </div>
    </div>
 </div>
