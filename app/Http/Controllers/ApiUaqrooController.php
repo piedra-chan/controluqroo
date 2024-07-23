@@ -8,6 +8,7 @@ use App\Models\EventosAcceso;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Notifications\AccesoNoAutorizadoNotification;
+use Illuminate\Support\Str;
 
 
 class ApiUaqrooController extends Controller
@@ -59,8 +60,10 @@ class ApiUaqrooController extends Controller
         $e = new EventosAcceso;
         $e->area_id = $areaId;
         $e->usuario_id = $user_id;
-        $e->fecha_hora = now();
-
+        $e->fecha_hora = Carbon::now();
+        $e->updated_at = Carbon::now();
+        $e->created_at = Carbon::now();
+        $e->evento_id = $this->generateEventoId();
         if($user) {
 
         $validacion = Autorizaciones::where('usuario_id', $user_id)
@@ -81,15 +84,25 @@ class ApiUaqrooController extends Controller
             $e->permiso = 'NO PERMITIDO';
             $e->save();
 
-            $user->notify(new AccesoNoAutorizadoNotification());
+           // $user->notify(new AccesoNoAutorizadoNotification());
 
             return response()->json(['acceso' => false]);
         }
     }else {
         return response()->json(['Usuario no encontrado']); 
     }
-    
                                     
 
     }
+
+    public function generateEventoId()
+    {
+        $maxValue = 999999999;
+
+        do {
+            $randomNumber = random_int(1, $maxValue); // Puedes ajustar el rango según tus necesidades
+        } while (EventosAcceso::where('evento_id', $randomNumber)->exists());
+    
+        return $randomNumber;    }
+    
 }
