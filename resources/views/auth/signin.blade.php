@@ -38,18 +38,23 @@
                     <h2 class="title">Registro</h2>
                     <div class="input-field">
                       <i class="fas fa-user"></i>
-                      <input type="text" placeholder="Username" />
+                      <input type="text" placeholder="Nombre" />
                     </div>
+                    <div class="input-field">
+                      <i class="fas fa-user"></i>
+                      <input type="text" placeholder="Apellido materno" />
+                    </div>
+                    <div class="input-field">
+                      <i class="fas fa-user"></i>
+                      <input type="text" placeholder="Apellido paterno" />
+                    </div>                   
                     <div class="input-field">
                     <i class="fa-solid fa-book"></i>
                     <select name="pets" id="pet-select">
-  <option value="">--Porfavor selecciona una opción--</option>
-  <option value="dog">Dog</option>
-  <option value="cat">Cat</option>
-  <option value="hamster">Hamster</option>
-  <option value="parrot">Parrot</option>
-  <option value="spider">Spider</option>
-  <option value="goldfish">Goldfish</option>
+  <option value="">--Género--</option>
+  <option value="M">Hombre</option>
+  <option value="F">Mujer</option>
+  <option value="OTRO">Prefiero no contestar</option>
 </select>                    
 </div>
                     <div class="input-field">
@@ -61,21 +66,6 @@
                       <input type="password" placeholder="Contraseña" />
                     </div>
                     <input type="submit" class="btn" value="Registrar" />
-<!--                    <p class="social-text">O registrate con las plataformas sociales</p>
-                    <div class="social-media">
-                      <a href="#" class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
-                      </a>
-                      <a href="#" class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                      </a>
-                      <a href="#" class="social-icon">
-                        <i class="fab fa-google"></i>
-                      </a>
-                      <a href="#" class="social-icon">
-                        <i class="fab fa-linkedin-in"></i>
-                      </a>
-                    </div> -->
                   </form>
             </div>
         </div>

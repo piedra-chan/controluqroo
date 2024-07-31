@@ -36,7 +36,7 @@
                         <h3 class="">Perfil</h3>
                     </div>
                     <div class="text-center user-info">
-                        <img src="{{Vite::asset('resources/images/profile-3.jpeg')}}" alt="avatar">
+                        <img src="{{Vite::asset('resources/images/user.png')}}" alt="avatar" width="95" height="95">
                         <p class="">{{ $user->nombre . ' ' . $user->ape_materno . ' '. $user->ape_paterno}}</p>
                     </div>
                     <div class="user-info-list">
@@ -66,7 +66,7 @@
                     {!! $qrCode !!}
                     </div>
                     <br>
-                    <a href="/download-qr" class="btn btn-success mb-2 me-4">Descargar</a>
+                    <a href="/generar-qr-user" class="btn btn-success mb-2 me-4">Descargar</a>
                 </div>
             </div>
     

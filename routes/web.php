@@ -30,15 +30,26 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/ver-users', [UserController::class, 'index'])->name('user.index');
     Route::get('/generar-qr/{id}', [UserController::class, 'generarQr'])->name('user.qr');
+    Route::get('/generar-qr-user', [UserController::class, 'generarQrUser'])->name('user.qrU');
     Route::get('/enviar-qr', [UserController::class, 'enviarMailsQr'])->name('mail.qr');
     Route::get('/user-info', [UserController::class, 'userInfo']);
     Route::get('/download-qr', [UserController::class, 'downloadQr']);
 });
 
+Route::get('/form', function () {
+    return view('pages-control.solicitudes.solicitud_form');
+});
+Route::get('/buzon', function () {
+    return view('pages-control.solicitudes.buzon');
+});
+
+Route::get('/ejemplo', function () {
+    return view('dashboard-u');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 
 //Rutas para las areas

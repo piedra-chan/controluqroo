@@ -43,6 +43,30 @@ class UserController extends Controller
         $qrCode = QrCode::size(200)->merge($pathToImage, 0.3, true)->generate($correo_encriptado);
         return view('qrcode', compact('qrCode', 'user'));
     }
+
+    public function generarQrUser()
+    {
+        $user = User::userIn();
+
+        $user_email = $user->email;
+        //encriptacion usando la funcioon oppenssl_encrypt para aes 256
+        $key = env('ENCRYPTION_KEY');
+
+        //vector de inicialización
+
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+
+        //encriptar el email
+        $encriptacion = openssl_encrypt($user_email, 'aes-256-cbc', $key, 0, $iv);
+
+        //concatenar el vector de inicializacion y el email cifrado
+        $correo_encriptado = base64_encode($iv . $encriptacion);
+
+        $pathToImage = public_path('images/uqroo.png');
+
+        $qrCode = QrCode::size(200)->merge($pathToImage, 0.3, true)->generate($correo_encriptado);
+        return view('qrcode', compact('qrCode', 'user'));
+    }
     
     public function enviarMailsQr()
     {

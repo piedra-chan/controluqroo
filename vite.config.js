@@ -54,6 +54,8 @@ export default defineConfig({
                 'resources/scss/light/plugins/notification/snackbar/custom-snackbar.scss',
                 'resources/scss/light/plugins/table/datatable/custom_dt_miscellaneous.scss',
                 'resources/scss/dark/plugins/table/datatable/custom_dt_miscellaneous.scss',
+                'resources/scss/light/assets/components/timeline.scss',
+                'resources/assets/js/scrollspyNav.js',
                 'resources/scss/dark/assets/main.scss',
                 'resources/scss/light/assets/components/list-group.scss',
                 'resources/scss/dark/assets/components/list-group.scss',
