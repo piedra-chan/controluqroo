@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Notifications\AccesoNoAutorizadoNotification;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 
 class ApiUaqrooController extends Controller
@@ -40,9 +41,10 @@ class ApiUaqrooController extends Controller
 
     public function buscarUsuario($email, $areaId)
     {
-
+     try {
         // Decodificar el correo de base 64
         $emailDecoded = base64_decode($email);
+        Log::info('Email decodificado: ' . $emailDecoded);
         //Separar el IV del correo encriptado
         $iv_lenght = openssl_cipher_iv_length('aes-256-cbc');
         $iv = substr($emailDecoded, 0, $iv_lenght);
@@ -53,8 +55,11 @@ class ApiUaqrooController extends Controller
 
         //desencriptar el email
         $user_email = openssl_decrypt($emailDecoded2, 'aes-256-cbc', $key, 0, $iv);
+        Log::info('Email desencriptado: ' . $user_email);
 
         $user = User::where('email', $user_email)->firstOrFail();
+        Log::info('Usuario encontrado: ' . $user->usuario_id);
+
         $user_id = $user->usuario_id;
 
         $e = new EventosAcceso;
@@ -64,7 +69,8 @@ class ApiUaqrooController extends Controller
         $e->updated_at = Carbon::now();
         $e->created_at = Carbon::now();
         $e->evento_id = $this->generateEventoId();
-        if($user) {
+        Log::info('Evento creado: ' . $e->evento_id);
+
 
         $validacion = Autorizaciones::where('usuario_id', $user_id)
                                         ->where('area_id', $areaId)
@@ -79,17 +85,20 @@ class ApiUaqrooController extends Controller
         if($validacion && (!$validacion->expires_at || Carbon::parse($validacion->expires_at)->isFuture()))  {
             $e->permiso = 'PERMITIDO';
             $e->save();
+            Log::info('Acceso permitido');
             return response()->json(['acceso' => true]);
         } else {
             $e->permiso = 'NO PERMITIDO';
             $e->save();
+            Log::info('Acceso no permitido');
 
            // $user->notify(new AccesoNoAutorizadoNotification());
 
             return response()->json(['acceso' => false]);
         }
-    }else {
-        return response()->json(['Usuario no encontrado']); 
+    } catch (\Exception $e) {
+        Log::error('Error: ' . $e->getMessage());
+        return response()->json(['acceso' => false, 'error' => $e->getMessage()], 500);
     }
                                     
 
