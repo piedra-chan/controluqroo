@@ -251,6 +251,9 @@ class AreaController extends Controller
     // Generar folio
     $uuid = Str::uuid()->toString();
 
+    $fecha_inicial = Carbon::parse($fecha_inicial)->translatedFormat('j \d\e F \d\e Y');
+    $fecha_final = Carbon::parse($fecha_final)->translatedFormat('j \d\e F \d\e Y');
+
     //$chartImage = $chart->render();
     $pdf = \PDF::loadView('pages-control.areas.pre-reporte', compact('data', 'uuid', 'conteo_final', 'conteo_permitidos', 'conteo_denegados', 'mesesOrdenados', 'fecha_inicial', 'fecha_final', 'nombre_area'));
 

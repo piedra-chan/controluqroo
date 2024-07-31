@@ -25,7 +25,7 @@
       <div class="profile-info">
          <div class="user-info">
             <div class="profile-img">
-               <img src="{{Vite::asset('resources/images/profile-30.png')}}" alt="avatar">
+               <img src="{{Vite::asset('resources/images/user.png')}}" alt="avatar">
             </div>
             <div class="profile-content">
                <h6 class="">{{ Auth::user()->nombre_usuario }}</h6>
