@@ -27,7 +27,8 @@ class User extends Authenticatable
         'nombre_usuario',
         'email',
         'password',
-        'persona_id'
+        'persona_id',
+        'rol_id'
     ];
 
     public function persona()
