@@ -56,12 +56,12 @@ class ApiUaqrooController extends Controller
         //desencriptar el email
         $user_email = openssl_decrypt($emailDecoded2, 'aes-256-cbc', $key, 0, $iv);
         Log::info('Email desencriptado: ' . $user_email);
-
+       // dd($user_email);
         $user = User::where('email', $user_email)->firstOrFail();
         Log::info('Usuario encontrado: ' . $user->usuario_id);
 
         $user_id = $user->usuario_id;
-
+    
         $e = new EventosAcceso;
         $e->area_id = $areaId;
         $e->usuario_id = $user_id;
@@ -74,14 +74,15 @@ class ApiUaqrooController extends Controller
 
         $validacion = Autorizaciones::where('usuario_id', $user_id)
                                         ->where('area_id', $areaId)
+                                        ->orderBy('created_at', 'desc')
                                         ->first();
-
         // usaremos una variable para almacnear el resultado de una funcion
         // Validar si la autorozación sigue vigente usando if, y la función
         // isFuture(), que es una función proporcionada por la biblioteca
         // carbon de PHP dateTime utilzada por Laravel, para el manejo
         // de fechas y tiempos más sencilla y fluida, en este caso 
-        // verifica si espires_at esta en futuro.                                
+        // verifica si espires_at esta en futuro.                      
+        $expiresAt = Carbon::parse($validacion->expires_at);          
         if($validacion && (!$validacion->expires_at || Carbon::parse($validacion->expires_at)->isFuture()))  {
             $e->permiso = 'PERMITIDO';
             $e->save();
