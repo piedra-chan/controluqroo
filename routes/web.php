@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/principal', [DashController::class, 'index'])->name('dash');
 });
 
+Route::get('/poll-access-count', [DashController::class, 'pollAccessCount'])->name('poll');
+
 Route::middleware('auth')->group(function () {
     Route::get('/historial', [EventosController::class, 'index'])->name('eventos');
 });

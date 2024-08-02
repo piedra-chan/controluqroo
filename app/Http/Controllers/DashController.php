@@ -118,4 +118,35 @@ class DashController extends Controller
         
         return view('barebone', compact('conteo_hoy','chart', 'conteo_permitido', 'conteo_denegado', 'porcentaje_perm', 'porcentaje_deneg'));
     }
+
+    public function pollAccessCount(Request $request)
+    {
+        // definimos la variable de inicio
+        $start = time();
+        // definimos el tiempo maximo de espera en segundos
+        $timeout = 30;
+        // variable para obtener el ultimo conteo
+        $lastAccessCount = $request->input('lastAccessCount', 0);
+
+        //Iniciar conteo dentro de un ciclo while
+
+        while(true) {
+            //obtenemos el conteo actual
+            $accessCount = DB::table('eventos_acceso')
+                ->whereDate('created_at', Carbon::today())
+                ->count();
+
+            if($accessCount > $lastAccessCount) {
+                return response()->json(['accessCount' => $accessCount]);
+            }
+
+            if ((time() - $start) >= $timeout) {
+                return response()->json(['accessCount' => $lastAccessCount]);
+            }
+
+            //Dormir medio segundo para volver a verificar
+
+            usleep(500000);
+        }
+    }
 }
