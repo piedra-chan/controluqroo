@@ -104,7 +104,7 @@
 
                 <div class="balance-info">
                     <h6>Intentos de acceso hoy</h6>
-                    <p>{{ $conteo_hoy }}</p>
+                    <p id="access-count">{{ $conteo_hoy }}</p>
                 </div>
             </div>
 
@@ -219,6 +219,24 @@
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
+
+    <script>
+        let lastAccessCount = {{ $conteo_hoy }};
+
+        function pollAccessCount() {
+            fetch('poll-access-count?lastAccessCount=' + lastAccessCount)
+            .then(response => response.json())
+            .then(data => {
+                if (data.accessCount > lastAccessCount) {
+                    lastAccessCount = data.accessCount;
+                    document.getElementById('access-count').innerHTML = lastAccessCount;
+                }
+                pollAccessCount();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        pollAccessCount(); //iniciar el long polling
+    </script>
         <script src="{{asset('plugins/apex/apexcharts.min.js')}}"></script>
 
 
