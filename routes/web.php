@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\DashController;
 use App\Http\Controllers\EventosController;
+use App\Http\Controllers\SolicitudController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,18 +20,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth')->group(function () {
-    Route::get('/principal', [DashController::class, 'index'])->name('dash');
+    Route::get('/mi-actividad', [DashController::class, 'miActividad'])->name('dash_u');
 });
+
+Route::middleware('checkRole:Admin')->group(function () {
+    Route::get('/principal', [DashController::class, 'index'])->name('dash');
+
+});
+
 
 Route::get('/poll-access-count', [DashController::class, 'pollAccessCount'])->name('poll');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/historial', [EventosController::class, 'index'])->name('eventos');
-});
-
 // Rutas para usuario
 Route::middleware('auth')->group(function () {
-    Route::get('/ver-users', [UserController::class, 'index'])->name('user.index');
     Route::get('/generar-qr/{id}', [UserController::class, 'generarQr'])->name('user.qr');
     Route::get('/generar-qr-user', [UserController::class, 'generarQrUser'])->name('user.qrU');
     Route::get('/enviar-qr', [UserController::class, 'enviarMailsQr'])->name('mail.qr');
@@ -39,23 +41,33 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/form', function () {
-    return view('pages-control.solicitudes.solicitud_form');
+    return view('pages-control.solicitudes.ver-solicitud');
 });
-Route::get('/buzon', function () {
-    return view('pages-control.solicitudes.buzon');
-});
+
 
 Route::get('/ejemplo', function () {
     return view('dashboard-u');
 });
 
-Route::get('/', function () {
-    return view('welcome');
+//Rutas para solicitud
+Route::middleware('auth')->group(function () {
+    Route::get('/solicitud-crear', [SolicitudController::class, 'crearSolicitud']);
+    Route::get('/buzon', [SolicitudController::class, 'index']);
+    Route::post('/solicitud-store', [SolicitudController::class, 'store'])->name('solicitud.store');
+    Route::get('/ver-solicitud/{id}', [SolicitudController::class, 'verSolicitud']);
+    Route::post('/conceder-permiso', [SolicitudController::class, 'concederPermisos'])->name('solicitud.acceso');
+    Route::get('/mi-historial', [EventosController::class, 'miHistorial'])->name('eventos_u');
 });
 
+// Rutas para la administracion de usuarios 
+Route::middleware('checkRole:Admin')->group(function () {
+    Route::get('/ver-users', [UserController::class, 'index'])->name('user.index');
+    Route::get('/historial', [EventosController::class, 'index'])->name('eventos');
+
+});
 
 //Rutas para las areas
-Route::middleware('auth')->group(function () {
+Route::middleware(['checkRole:Admin'])->group(function () {
     Route::get('/ver-areas', [AreaController::class, 'index'])->name('areas.index');
     Route::post('/guardar-area', [AreaController::class, 'store'])->name('areas.store');
     Route::get('/administrar-area/{id}', [AreaController::class, 'administrar'])->name('adm.area');
@@ -75,6 +87,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 require __DIR__.'/auth.php';
