@@ -149,6 +149,40 @@ class EventosAcceso extends Model
 
         return $sql->get();
     }
+
+    public static function accesosUsers($user_id = null)
+    {
+        $sql = DB::table('eventos_acceso as e')
+        ->join('usuarios as u', 'e.usuario_id', '=', 'u.usuario_id')
+        ->join('persona as p', 'u.usuario_id', '=', 'p.usuario_id')
+        ->join('areas as a', 'e.area_id', '=', 'a.area_id')
+        ->select(DB::raw('CONCAT(p.nombre, " ", p.ape_materno, " ", p.ape_paterno) AS full_name'), 'a.nombre', 'e.permiso', 'e.fecha_hora')
+        ->where('e.usuario_id', $user_id)
+        ->orderBy('e.fecha_hora', 'desc');
+
+        return $sql->get();
+    }
+
+    public static function accesosUser()
+    {
+        $fechaInicio = now()->startOfWeek();
+        $fechaFin = now()->endOfWeek();
+
+        $sql = DB::table('eventos_acceso as e')
+        ->join('usuarios as u', 'e.usuario_id', '=', 'u.usuario_id')
+        ->join('areas as a', 'e.area_id', '=', 'a.area_id')
+        ->select('a.nombre', 'e.created_at',
+            DB::raw("(SELECT COUNT(*) FROM eventos_acceso
+            WHERE eventos_acceso.usuario_id = u.usuario_id AND eventos_acceso.area_id = a.area_id
+            AND eventos_acceso.created_at BETWEEN '$fechaInicio' AND '$fechaFin') as conteo
+                        ")
+        )
+        ->where('u.usuario_id', '=', auth()->user()->usuario_id)
+        ->orderBy('e.created_at', 'desc')
+        ->limit(3);
+
+        return $sql->get();
+    }
     }
 
 

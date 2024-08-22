@@ -7,6 +7,7 @@ use App\Models\EventosAcceso;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
+use Illuminate\Support\Facades\Auth;
 
 
 class DashController extends Controller
@@ -115,7 +116,7 @@ class DashController extends Controller
         ]
     ]); */
         
-        
+       //dd(Auth::user()->role->rol);
         return view('barebone', compact('conteo_hoy','chart', 'conteo_permitido', 'conteo_denegado', 'porcentaje_perm', 'porcentaje_deneg'));
     }
 
@@ -148,5 +149,33 @@ class DashController extends Controller
 
             usleep(500000);
         }
+
+    }
+
+    public function miActividad()
+    {
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+        Carbon::setLocale('es');
+
+        $areas = EventosAcceso::accesosUser();
+ 
+        // mapeado del array areas para convertir el formato de fecha y hora al convencional
+        $areasFormateadas = $areas->map(function($area){
+            $area->created_at = Carbon::parse($area->created_at)->translatedFormat('j \d\e F \d\e Y h:i A');
+            return $area;
+        });
+
+        //obtener el último acceso del usuario
+        $ultimoAcceso = EventosAcceso::where('usuario_id', Auth::user()->usuario_id)
+                                        ->orderBy('created_at', 'desc')
+                                        ->first();
+        
+        // formatear el tiempo transcurrido desde el último acceso
+        // la funcion de carbon diffForHumans() Formatea la fecha del último acceso para que se muestre como "hace 2 horas" o similar.
+        $ultimoAccesoFormat = $ultimoAcceso 
+        ? Carbon::parse($ultimoAcceso->created_at)->diffForHumans()
+        : 'No se ha registrado ningún acceso';
+
+        return view('dashboard-u', compact('areasFormateadas', 'ultimoAccesoFormat'));
     }
 }

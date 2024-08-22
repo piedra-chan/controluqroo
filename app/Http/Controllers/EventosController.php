@@ -13,6 +13,7 @@ use DateTime;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class EventosController extends Controller
 {
@@ -23,5 +24,13 @@ class EventosController extends Controller
        // dd($eventos);
 
         return view('pages-control.historial', compact('eventos'));
+    }
+
+    public function miHistorial()
+    {
+        $user_id = Auth::user()->usuario_id;
+        $eventos = EventosAcceso::accesosUsers($user_id);
+
+        return view('pages-control.mi-historial', compact('eventos'));
     }
 }

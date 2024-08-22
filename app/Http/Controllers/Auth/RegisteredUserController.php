@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Faker\Factory as Faker;
 
@@ -47,6 +48,10 @@ class RegisteredUserController extends Controller
         $username = $faker->unique()->userName;
         $rol_id = 1;
 
+        DB::beginTransaction();
+
+        try {
+
         $user = User::create([
             'nombre_usuario' => $username,
             'email' => $request->email,
@@ -64,6 +69,9 @@ class RegisteredUserController extends Controller
         $persona->sexo = $request->genero;
         $persona->save();
 
+        $user->persona_id = $persona->persona_id;
+        $user->save();
+
         $personaId = $persona->persona_id;
         $user->persona_id = $personaId;
 
@@ -71,6 +79,12 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        DB::commit();
+
         return redirect(RouteServiceProvider::HOME);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->withErrors(['error' => 'Hubo un error al registrar el usuario']);
+    }
     }
 }

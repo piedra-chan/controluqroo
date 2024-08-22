@@ -54,8 +54,8 @@
     <div class="page-meta">
         <nav class="breadcrumb-style-one" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Form</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Layouts</li>
+                <li class="breadcrumb-item"><a href="#"></li>
+                <li class="breadcrumb-item active" aria-current="page"></li>
             </ol>
         </nav>
     </div>
@@ -73,51 +73,57 @@
         </div>
     </div>
     
-    <div class="row">
 
-        <div id="flHorizontalForm" class="col-lg-12 layout-spacing">
-            <div class="statbox widget box box-shadow">
-                <div class="widget-header">                                
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Horizontal form</h4>
-                        </div>                                                                        
-                    </div>
-                </div>
-                <div class="widget-content widget-content-area">
-                    <form>
-                        <div class="row mb-3">
-                          <label for="inputEmail2" class="col-sm-2 col-form-label">Mensaje</label>
-                          <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputEmail2">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="inputPassword2" class="col-sm-2 col-form-label">¿Hasta cuando?</label>
-                          <div class="col-sm-10">
-                            <input type="datetime-local" class="form-control" id="inputPassword2">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="inputPassword2" class="col-sm-2 col-form-label">Usuarios para acceso</label>
-                          <div class="col-sm-10">
-                          <select id="mi-select" name="usuarios[]" multiple="multiple" class="form-control" style="width: 100%;">  
-                                    <option value="">Hola</option>
+
+    <div class="card shadow-sm w-100 mx-auto">
+  <div class="card-header">
+    <h3 class="h5">Solicitud de acceso</h3>
+    <p class="text-muted small">Llena todos los campos porfavor.</p>
+  </div>
+  <div class="card-body">
+    <div class="row mb-3">
+    </div>
+    <form method="POST" action="{{ route('solicitud.store') }}">
+    @csrf
+    <div class="mb-3">
+      <label class="form-label" for="area">Area deseada</label>
+      <select class="form-select" aria-label="Default select example" name="area">
+            <option>Selecciona un área</option>
+            @foreach ($areas as $area)
+            <option value="{{ $area->area_id }}">{{ $area->nombre }}</option>
+            @endforeach
+</select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="expiration">¿Hasta cúando?</label>
+      <input type="datetime-local" class="form-control" id="expiration" name="expiracion">
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="expiration">Usuarios para acceso</label>
+      <select id="mi-select" name="usuarios[]" multiple="multiple" class="form-control" style="width: 100%;">  
+                                    @foreach($users_i as $user)
+                                    <option value="{{ $user->usuario_id }}">{{ $user->nombre .' '. $user->ape_materno . ' ' . $user->ape_paterno }}</option>
+                                    @endforeach
+                                </select>
                            </select>
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="inputPassword2" class="col-sm-2 col-form-label">Área para acceso</label>
-                          <div class="col-sm-10">
-                            <input type="datetime-local" class="form-control" id="inputPassword2">
-                          </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Enviar</button>
-                    </form>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="justification">Justificación</label>
+      <textarea
+        class="form-control"
+        id="justification"
+        name="mensaje"
+        placeholder="Explica por que se necesita el acceso"
+        rows="3"
+      ></textarea>
+    </div>
+  </div>
+  <div class="card-footer text-end">
+    <button type="submit" class="btn btn-primary">Enviar</button>
+  </div>
+</form>
+</div>
 
-                </div>
-            </div>
-        </div>
     </div>
 
  
@@ -133,6 +139,37 @@
             });
         });
     </script>
+
+@if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                     // Opcional: añadir configuración de customClass para aislar estilos
+                     customClass: {
+                        container: 'swal-container',
+                        popup: 'swal-popup',
+                        header: 'swal-header',
+                        title: 'swal-title',
+                        text: 'swal-text',
+                        closeButton: 'swal-close-button',
+                        icon: 'swal-icon',
+                        image: 'swal-image',
+                        content: 'swal-content',
+                        input: 'swal-input',
+                        actions: 'swal-actions',
+                        confirmButton: 'swal-confirm-button',
+                        cancelButton: 'swal-cancel-button',
+                        footer: 'swal-footer'
+                    }
+                });
+            });
+        </script>
+        @endif
+
 
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
