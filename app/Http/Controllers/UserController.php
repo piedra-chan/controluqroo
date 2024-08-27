@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Crypt;
 use App\Mail\UsersQr;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Persona;
+use Faker\Factory as Faker;
 
 
 class UserController extends Controller
@@ -107,6 +111,8 @@ class UserController extends Controller
 
         //concatenar el vector de inicializacion y el email cifrado
         $correo_encriptado = base64_encode($iv . $encriptacion);
+        $correo_encriptado = str_replace('/', '_', $correo_encriptado);
+
 
         $pathToImage = public_path('images/uqroo.png');
 
@@ -134,11 +140,81 @@ class UserController extends Controller
 
         //concatenar el vector de inicializacion y el email cifrado
         $correo_encriptado = base64_encode($iv . $encriptacion);
+        $correo_encriptado = str_replace('/', '_', $correo_encriptado);
 
         $pathToImage = public_path('images/uqroo.png');
 
         $qrCode = QrCode::format('png')->generate($correo_encriptado);
 
         return response($qrCode)->header('Content-type', 'image/png');
+    }
+
+    public function crearAdmin()
+    {
+        return view('pages-control.user.admin_form');
+    }
+
+    public function nuevoAdmin(Request $request)
+    {
+        $faker = Faker::create();
+
+        $user = new User;
+
+        $username = $faker->unique()->userName;
+
+        $user->nombre_usuario = $username;
+        $user->email = $request->correo;
+        $user->password = Hash::make($request->contrasena);
+        $user->rol_id = 2;
+        $user->save();
+
+        $userId = $user->usuario_id;
+
+        $persona = new Persona;
+        $persona->usuario_id = $userId;
+        $persona->nombre = $request->nombre;
+        $persona->ape_materno = $request->apeMaterno;
+        $persona->ape_paterno = $request->apePaterno;
+        $persona->sexo = $request->genero;
+        $persona->save();
+
+        $personaId = $persona->persona_id;
+        $user->persona_id = $personaId;
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Nuevo administrador registrado');
+
+    }
+
+    public function nuevoProfe(Request $request)
+    {
+        $faker = Faker::create();
+
+        $user = new User;
+
+        $username = $faker->unique()->userName;
+
+        $user->nombre_usuario = $username;
+        $user->email = $request->correo;
+        $user->password = Hash::make($request->contrasena);
+        $user->rol_id = 3;
+        $user->save();
+
+        $userId = $user->usuario_id;
+
+        $persona = new Persona;
+        $persona->usuario_id = $userId;
+        $persona->nombre = $request->nombre;
+        $persona->ape_materno = $request->apeMaterno;
+        $persona->ape_paterno = $request->apePaterno;
+        $persona->sexo = $request->genero;
+        $persona->save();
+
+        $personaId = $persona->persona_id;
+        $user->persona_id = $personaId;
+
+        $user->save();
+
     }
 }

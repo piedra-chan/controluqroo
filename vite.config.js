@@ -65,6 +65,7 @@ export default defineConfig({
                 'resources/js/login.js',
                 'resources/js/app.js',
                 'resources/css/login.css',
+                'resources/css/form.css',
             ],
             refresh: true,
         }),
