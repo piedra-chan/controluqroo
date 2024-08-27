@@ -12,6 +12,21 @@
         @vite(['resources/scss/light/plugins/table/datatable/custom_dt_custom.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/custom_dt_custom.scss'])
+        <link rel="stylesheet" href="{{asset('plugins/table/datatable/datatables.css')}}">
+   @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
+   @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
+   @vite(['resources/scss/light/assets/components/carousel.scss'])
+   @vite(['resources/scss/light/assets/components/modal.scss'])
+   @vite(['resources/scss/light/assets/components/tabs.scss'])
+   @vite(['resources/scss/dark/assets/components/carousel.scss'])
+   @vite(['resources/scss/dark/assets/components/modal.scss'])
+   @vite(['resources/scss/dark/assets/components/tabs.scss'])
+   <link rel="stylesheet" href="{{asset('plugins/animate/animate.css')}}">
+   <link rel="stylesheet" href="{{asset('plugins/filepond/filepond.min.css')}}">
+   <link rel="stylesheet" href="{{asset('plugins/filepond/FilePondPluginImagePreview.min.css')}}">
+   @vite(['resources/scss/light/plugins/filepond/custom-filepond.scss'])
+   @vite(['resources/scss/dark/plugins/filepond/custom-filepond.scss'])
+   <!--  BEGIN CUSTOM STYLE FILE  -->
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -31,8 +46,10 @@
     <div class="row layout-spacing">
         <div class="col-lg-12">
             <div class="statbox widget box box-shadow">
-            <a class="btn btn-primary mb-2 me-4" href="/enviar-qr">Enviar QR a todos los usuarios</a>
-
+            <a type="button" href="/nuevo-admin" class="btn btn-primary mb-2 mr-2" >
+<i class=""></i>
+            Nuevo usuario administrador
+</a>
                 <div class="widget-content widget-content-area">
                     
                     <table id="style-1" class="table style-1 dt-table-hover non-hover">
@@ -78,7 +95,46 @@
         </div>
     </div>
 
-
+<!-- Modal para nuevo admin-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalCenterTitle">Nueva área</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                     <line x1="18" y1="6" x2="6" y2="18"></line>
+                     <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+               </button>
+            </div>
+            <div class="modal-body">
+               <h4 class="modal-heading mb-4 mt-2">Porfavor complete el formulario</h4>
+               <div class="row mb-4">
+                  <div class="form-group mb-4">
+                     <form method="POST" action="{{ route('areas.store') }}">
+                        @csrf
+                        <label for="disabledTextInput">Nombre del área</label>
+                        <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre">
+                  </div>
+                  <div class="form-group mb-4">
+                  <label for="disabledTextInput">Usuarios permitidos</label>
+                  <input type="text" name="users" id="users"  class="form-control" placeholder="Usuarios permitidos">
+                  </div>
+                  <div class="form-group mb-4">
+                  <label for="disabledTextInput">Descripción</label>
+                  <input type="text" name="descripcion" class="form-control" placeholder="Descripción">
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+            <button class="btn btn-light-dark" data-bs-dismiss="modal">Descartar</button>
+            </div>
+         </div>
+      </div>
+   </div>
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>

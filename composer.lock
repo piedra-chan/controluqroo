@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c453a53cbb80667c67b562d1d9a24580",
+    "content-hash": "3bcd120b6310508a0df57fc7b43fa7f8",
     "packages": [
         {
             "name": "arielmejiadev/larapex-charts",
@@ -10710,7 +10710,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "fruitcake/laravel-cors": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

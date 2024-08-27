@@ -165,4 +165,50 @@ class SolicitudController extends Controller
    return redirect()->back()->with('success', 'Los usuarios ahora tienen acceso a esta área');
 
     }
+
+    public function miBuzon()
+    {
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+        Carbon::setLocale('es');
+
+        $solicitudes = DB::table('solicitudes as a')
+                        ->join('usuarios as b', 'a.usuario_id', '=', 'b.usuario_id')
+                        ->join('persona as c', 'b.usuario_id', '=', 'c.usuario_id')
+                        ->join('areas as e', 'a.area_id', '=', 'e.area_id')
+                        ->select('c.nombre', 'c.ape_materno', 'c.ape_paterno', 'a.created_at', 'a.solicitud_id', 'a.estado')
+                        ->where('a.usuario_id', Auth::user()->usuario_id)
+                        ->get();
+        
+      /*  foreach($solicitudes as $solicitud) {
+
+        $solicitudes_usuario = DB::table('solicitud_usuarios as s')
+                        ->join('solicitudes as b', 's.solicitud_id', '=', 'b.solicitud_id')
+                        ->join('usuarios as u', 's.usuario_id', '=', 'u.usuario_id')
+                        ->join('persona as p', 'u.usuario_id', '=', 'p.usuario_id')
+                        ->select('b.area_id', 's.usuario_id')
+                        ->where('s.solicitud_id', $solicitud->solicitud_id)
+                        ->get(); 
+
+        } */
+
+        $solicitudes_format = collect($solicitudes)->map(function($solicitud){
+            return [
+                'nombre' => $solicitud->nombre . ' ' . $solicitud->ape_materno . ' '. $solicitud->ape_paterno,
+                'id' => $solicitud->solicitud_id,
+                'estado' => $solicitud->estado,
+                'fecha' => $solicitud->created_at
+                    ? Carbon::parse($solicitud->created_at)->diffForHumans()
+                    : 'No se ha registrado fecha',
+            ];
+        });
+
+        $solicitudes_array = $solicitudes_format->toArray();
+
+
+
+
+        return view('pages-control.solicitudes.buzon', compact('solicitudes_array'));
+
+    }
+
 }

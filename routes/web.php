@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/enviar-qr', [UserController::class, 'enviarMailsQr'])->name('mail.qr');
     Route::get('/user-info', [UserController::class, 'userInfo']);
     Route::get('/download-qr', [UserController::class, 'downloadQr']);
+    Route::post('/user-admin', [UserController::class, 'nuevoAdmin'])->name('user.admin');
+    Route::get('/nuevo-admin', [UserController::class, 'crearAdmin']);
 });
 
 Route::get('/form', function () {
@@ -46,13 +48,14 @@ Route::get('/form', function () {
 
 
 Route::get('/ejemplo', function () {
-    return view('dashboard-u');
+    return view('pages-control.user.admin_form');
 });
 
 //Rutas para solicitud
 Route::middleware('auth')->group(function () {
     Route::get('/solicitud-crear', [SolicitudController::class, 'crearSolicitud']);
     Route::get('/buzon', [SolicitudController::class, 'index']);
+    Route::get('/mi-buzon', [SolicitudController::class, 'miBuzon']);
     Route::post('/solicitud-store', [SolicitudController::class, 'store'])->name('solicitud.store');
     Route::get('/ver-solicitud/{id}', [SolicitudController::class, 'verSolicitud']);
     Route::post('/conceder-permiso', [SolicitudController::class, 'concederPermisos'])->name('solicitud.acceso');
